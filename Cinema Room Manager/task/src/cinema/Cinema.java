@@ -1,41 +1,106 @@
 package cinema;
+
 import java.util.Scanner;
-import java.lang.System;
 
 public class Cinema {
+
     public static void main(String[] args) {
-        final int MAX_ROWS = 9;
-        int rows;
-        int seatsPerRow;
-        int anzahlSeatsGesamt;
-        int gesEinnahmen;
+        int rowsCount = getRowsCount();
+        int seatsInEachRowCount = getSeatsInEachRowCount();
+        String[][] cinemaRoom = fillTheMatrixOfSeats(rowsCount, seatsInEachRowCount);
+        printCinema(cinemaRoom, seatsInEachRowCount);
+        int rowNumber = getRowNumber();
+        int seatNumber = getSeatNumber();
+        getPriceOfTicket(rowNumber, rowsCount, seatsInEachRowCount);
+        bookedTheSeat(cinemaRoom, rowNumber, seatNumber);
+        printCinema(cinemaRoom, seatsInEachRowCount);
+    }
+
+    public static int getRowsCount() {
+        System.out.print("Enter the number of rows:" + '\n' + "> ");
         Scanner scanner = new Scanner(System.in);
+        int rowsCount = scanner.nextInt();
+        return rowsCount;
 
-        do {
-            System.out.println("Enter the number of rows:");
-            System.out.print(">");
-            rows = scanner.nextInt();
-            if (rows > MAX_ROWS) {
-                System.out.println("Maxrows <= " + MAX_ROWS);
-            }
-        } while (rows > MAX_ROWS);
+    }
 
-        System.out.println("Enter the number of seats in each row:");
-        System.out.print(">");
-        seatsPerRow = scanner.nextInt();
+    public static int getSeatsInEachRowCount() {
+        System.out.print("Enter the number of seats in each row:" + '\n' + "> ");
+        Scanner scanner = new Scanner(System.in);
+        int seatsInEachRowCount = scanner.nextInt();
+        System.out.println();
+        return seatsInEachRowCount;
+    }
 
-        anzahlSeatsGesamt = rows * seatsPerRow;
-        //System.out.println(anzahlSeatsGesamt);
-        if (anzahlSeatsGesamt <= 60) {
-            gesEinnahmen = anzahlSeatsGesamt * 10;
-        } else {
-            if (rows%2==0){
-                gesEinnahmen = (anzahlSeatsGesamt/2) * 8 + (anzahlSeatsGesamt/2) * 10;
-            } else {
-                gesEinnahmen = (((rows-1)/2) * seatsPerRow * 10) + (((rows+1)/2) * seatsPerRow * 8);
+    public static String[][] fillTheMatrixOfSeats(int rowsCount, int seatsInEachRowCount) {
+        String[][] cinemaRoom = new String[rowsCount][seatsInEachRowCount + 1];
+        for (int i = 0; i < cinemaRoom.length; i++) {
+            for (int j = 0; j < cinemaRoom[i].length; j++) {
+                cinemaRoom[i][j] = "S";
             }
         }
-        System.out.println("Total income:");
-        System.out.println("$" + gesEinnahmen);
+        return cinemaRoom;
+    }
+
+    public static void printCinema(String[][] cinemaRoom, int seatsInEachRowCount) {
+        String result = "  ";
+        for (int i = 1; i <= seatsInEachRowCount; i++) {
+            result += i + " ";
+        }
+        System.out.println("Cinema:");
+        System.out.println(result);
+
+        for (int i = 0; i < cinemaRoom.length; i++) {
+            for (int j = 0; j < cinemaRoom[i].length; j++) {
+                if (j == 0) {
+                    System.out.print(i + 1 + " ");
+                } else {
+                    System.out.print(cinemaRoom[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public static int getRowNumber() {
+        System.out.print("Enter a row number:" + '\n' + "> ");
+        Scanner scanner = new Scanner(System.in);
+        int rowNumber = scanner.nextInt();
+        return rowNumber;
+    }
+
+    public static int getSeatNumber() {
+        System.out.print("Enter a seat number in that row:" + '\n' + "> ");
+        Scanner scanner = new Scanner(System.in);
+        int seatNumber = scanner.nextInt();
+        System.out.println();
+        return seatNumber;
+    }
+
+    public static void getPriceOfTicket(int rowNumber, int rowsCount, int seatsInEachRowCount) {
+        if (rowsCount * seatsInEachRowCount <= 60) {
+            System.out.println("Ticket price: " + "$10");
+        } else {
+            if (rowsCount % 2 == 0)
+                if (rowNumber <= rowsCount / 2) {
+                    System.out.println("Ticket price: " + "$10");
+                } else {
+                    System.out.println("Ticket price: " + "$8");
+                }
+            else {
+                if (rowNumber <= (rowsCount - 1) / 2) {
+                    System.out.println("Ticket price: " + "$10");
+                } else {
+                    System.out.println("Ticket price: " + "$8");
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public static String[][] bookedTheSeat(String[][] cinemaRoom, int rowNumber, int seatNumber) {
+        cinemaRoom[rowNumber - 1][seatNumber] = "B";
+        return cinemaRoom;
     }
 }
