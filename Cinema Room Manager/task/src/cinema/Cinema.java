@@ -14,7 +14,6 @@ public class Cinema {
         getPriceOfTicket(rowNumber, rowsCount, seatsInEachRowCount);
         bookedTheSeat(cinemaRoom, rowNumber, seatNumber);
         printCinema(cinemaRoom, seatsInEachRowCount);
-        System.out.println(1);
     }
 
     public static int getRowsCount() {
